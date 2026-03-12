@@ -19,8 +19,8 @@ RK3588笔记本电脑，来自ODM厂商深圳**天思智慧Skysi**，型号**X5*
 
 ### 开鸿BotBook
 请访问[Kaihong官网获取](https://mall.kaihong.com/productDetail?skuId=1922672866491367425&goodsId=1922672866000633858)
-![image](images/botbook.png)
+![image](.images/botbook.png)
 
 ### 天思智慧Skysi X5
 [天思智慧Skysi X5](https://skysi.com.cn/en/product/p2/20220926/2784.aspx)
-![image](images/de-img3.jpg)
+![image](.images/de-img3.jpg)

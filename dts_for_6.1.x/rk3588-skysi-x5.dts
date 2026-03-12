@@ -82,7 +82,7 @@
 		pinctrl-0 =<&leds_gpio>;
 	};
 
-	panel-edp {
+	panel_edp: panel-edp {
 		compatible = "simple-panel";
 		backlight = <&backlight>;
 		enable-gpios = <&gpio1 RK_PC4 GPIO_ACTIVE_HIGH>;
@@ -122,7 +122,7 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&sw_lid>;
 
-		hall-sensor {
+		sw_lid: hall-sensor {
 			wakeup-event-action = <0x02>;
 			wakeup-source;
 			gpios = <&gpio0 RK_PD2 GPIO_ACTIVE_LOW>;
@@ -355,22 +355,6 @@
 &pwm15 {
 	pinctrl-names = "active";
 	pinctrl-0 = <&pwm15m1_pins>;
-	status = "okay";
-};
-
-&mipidcphy0 {
-	status = "okay";
-};
-
-&mipidcphy1 {
-	status = "okay";
-};
-
-&csi2_dphy0_hw {
-	status = "okay";
-};
-
-&csi2_dphy1_hw {
 	status = "okay";
 };
 
@@ -681,22 +665,26 @@
 /* vp0 & vp1 splice for 8K output */
 &vp0 {
 	rockchip,plane-mask = <(1 << ROCKCHIP_VOP2_CLUSTER0 | 1 << ROCKCHIP_VOP2_ESMART0)>;
-	rockchip,primary-plane = <ROCKCHIP_VOP2_ESMART0>;
+	rockchip,primary-plane = <ROCKCHIP_VOP2_CLUSTER0>;
+	cursor-win-id = <ROCKCHIP_VOP2_ESMART0>;
 };
 
 &vp1 {
 	rockchip,plane-mask = <(1 << ROCKCHIP_VOP2_CLUSTER1 | 1 << ROCKCHIP_VOP2_ESMART1)>;
-	rockchip,primary-plane = <ROCKCHIP_VOP2_ESMART1>;
+	rockchip,primary-plane = <ROCKCHIP_VOP2_CLUSTER1>;
+	cursor-win-id = <ROCKCHIP_VOP2_ESMART1>;
 };
 
 &vp2 {
 	rockchip,plane-mask = <(1 << ROCKCHIP_VOP2_CLUSTER2 | 1 << ROCKCHIP_VOP2_ESMART2)>;
-	rockchip,primary-plane = <ROCKCHIP_VOP2_ESMART2>;
+	rockchip,primary-plane = <ROCKCHIP_VOP2_CLUSTER2>;
+	cursor-win-id = <ROCKCHIP_VOP2_ESMART2>;
 };
 
 &vp3 {
 	rockchip,plane-mask = <(1 << ROCKCHIP_VOP2_CLUSTER3 | 1 << ROCKCHIP_VOP2_ESMART3)>;
-	rockchip,primary-plane = <ROCKCHIP_VOP2_ESMART3>;
+	rockchip,primary-plane = <ROCKCHIP_VOP2_CLUSTER3>;
+	cursor-win-id = <ROCKCHIP_VOP2_ESMART3>;
 };
 
 &i2c2 {
