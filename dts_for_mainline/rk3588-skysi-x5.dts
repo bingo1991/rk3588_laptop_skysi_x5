@@ -855,11 +855,12 @@
 
 	brcmf: wifi@1 {
 		compatible = "brcm,bcm43752-fmac";
-		firmware-name = "brcm/brcmfmac43752-sdio.bin";
 		reg = <1>;
 		interrupt-parent = <&gpio0>;
-		interrupts = <RK_PC4 IRQ_TYPE_LEVEL_HIGH>;
+		interrupts = <RK_PC4 IRQ_TYPE_LEVEL_HIGH>;	/* WL_HOST_WAKE */
 		interrupt-names = "host-wake";
+
+		vmmc-supply = <&vcc_3v3_s3>;
 		pinctrl-0 = <&wifi_host_wake_irq>;
 		pinctrl-names = "default";
 	};
@@ -1613,18 +1614,17 @@
 	status = "okay";
 
 	bluetooth {
-		compatible = "brcm,bcm43752-bt";
+		compatible = "brcm,bcm4362a2-bt";
 		clocks = <&hym8563>;
 		clock-names = "lpo";
-		device-wakeup-gpios = <&gpio4 RK_PC4 GPIO_ACTIVE_HIGH>;
-		firmware-name = "brcm/BCM4362A2.hcd";
-		host-wakeup-gpios = <&gpio3 RK_PA6 GPIO_ACTIVE_HIGH>; 
-		interrupt-parent = <&gpio0>;
-		interrupts = <RK_PA0 IRQ_TYPE_EDGE_FALLING>;
-		interrupt-names = "host-wakeup";
+		device-wakeup-gpios = <&gpio4 RK_PC4 GPIO_ACTIVE_HIGH>;	/* BT_WAKE */
+		host-wakeup-gpios = <&gpio3 RK_PA6 GPIO_ACTIVE_HIGH>; 	/* BT_HOST_WAKE */
+		shutdown-gpios = <&gpio3 RK_PB1 GPIO_ACTIVE_HIGH>;		/* BT_REG_ON */
+		max-speed = <3000000>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&uart1_gpios>, <&bt_reset_gpio>, <&bt_wake_gpio>, <&bt_irq_gpio>;
-		shutdown-gpios = <&gpio3 RK_PB1 GPIO_ACTIVE_HIGH>;
+		vbat-supply = <&vcc_3v3_s3>;
+		vddio-supply = <&vcc_1v8_s3>;
 	};
 };
 
