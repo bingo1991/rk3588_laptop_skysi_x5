@@ -227,9 +227,8 @@
 		clocks = <&hym8563>;
 		clock-names = "ext_clock";
 		uart_rts_gpios = <&gpio1 RK_PD6 GPIO_ACTIVE_LOW>;
-		pinctrl-names = "default", "rts_gpio";
+		pinctrl-names = "default";
 		pinctrl-0 = <&uart1m1_rtsn>;
-		pinctrl-1 = <&uart1_gpios>;
 		BT,reset_gpio = <&gpio3 RK_PB1 GPIO_ACTIVE_HIGH>;
 		BT,wake_gpio = <&gpio4 RK_PC4 GPIO_ACTIVE_HIGH>;
 		BT,wake_host_irq = <&gpio3 RK_PA6 GPIO_ACTIVE_HIGH>;
@@ -489,7 +488,7 @@
 &sdio {
 	max-frequency = <150000000>;
 	pinctrl-names = "default";
-	pinctrl-0 = <&sdio_pins>;
+	pinctrl-0 = <&sdiom1_pins>;
 	no-sd;
 	no-mmc;
 	bus-width = <4>;
@@ -859,17 +858,6 @@
 		};
 	};
 
-	sdio-wifi {
-		sdio_pins: sdio-pins {
-			rockchip,pins = <3 RK_PA5 2 &pcfg_pull_up_drv_level_2>,
-					<3 RK_PA4 2 &pcfg_pull_up_drv_level_2>,
-					<3 RK_PA0 2 &pcfg_pull_up_drv_level_2>,
-					<3 RK_PA1 2 &pcfg_pull_up_drv_level_2>,
-					<3 RK_PA2 2 &pcfg_pull_up_drv_level_2>,
-					<3 RK_PA3 2 &pcfg_pull_up_drv_level_2>;
-		};
-	};
-
 	usb {
 		vcc5v0_host_en: vcc5v0-host-en {
 		rockchip,pins = <4 RK_PC3 RK_FUNC_GPIO &pcfg_pull_none>,
@@ -891,12 +879,6 @@
 	wifi_vbat {
 		wifi_3v3: wifi-vbat {
 			rockchip,pins = <3 RK_PC6 RK_FUNC_GPIO &pcfg_pull_up>;
-		};
-	};
-
-	wireless-bluetooth {
-		uart1_gpios: uart1-gpios {
-			rockchip,pins = <1 RK_PD6 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 
