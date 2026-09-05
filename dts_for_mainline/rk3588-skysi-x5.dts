@@ -427,22 +427,6 @@
 	cpu-supply = <&vdd_cpu_lit_s0>;
 };
 
-&dp0 {		// phys = <&usbdp_phy0 PHY_TYPE_DP>;
-	status = "okay";
-};
-
-&dp0_in {
-	dp0_in_vp0: endpoint {
-		remote-endpoint = <&vp0_out_dp0>;
-	};
-};
-
-&dp0_out {
-	dp0_out_con: endpoint {
-		remote-endpoint = <&usbdp_phy0_dp_in>;
-	};
-};
-
 &edp1 {
 	force-hpd;
 	status = "okay";
@@ -601,25 +585,22 @@
 
 				port@0 {
 					reg = <0>;
-
 					usbc0_hs: endpoint {
-						remote-endpoint = <&usb_host0_xhci_hs>;
+						remote-endpoint = <&usb_host0_xhci_to_usbc0>;
 					};
 				};
 
 				port@1 {
 					reg = <1>;
-
 					usbc0_ss: endpoint {
-						remote-endpoint = <&usbdp_phy0_ss_out>;
+						remote-endpoint = <&usbdp_phy0_ss>;
 					};
 				};
 
 				port@2 {
 					reg = <2>;
-
 					usbc0_sbu: endpoint {
-						remote-endpoint = <&usbdp_phy0_dp_out>;
+						remote-endpoint = <&usbdp_phy0_sbu>;
 					};
 				};
 			};
@@ -661,8 +642,8 @@
 		PVDD-supply = <&vcc_3v3_s0>;
 		#sound-dai-cells = <0>;
 
-		//interrupt-parent = <&gpio1>;
-		//interrupts = <RK_PD0 GPIO_ACTIVE_LOW>;
+		interrupt-parent = <&gpio1>;
+		interrupts = <RK_PD0 GPIO_ACTIVE_LOW>;
 		mic1-src = <22>;
 		mic2-src = <44>;
 		jack-pol = <07>;
@@ -953,6 +934,7 @@
 	sd-uhs-sdr104;
 	status = "okay";
 
+/*
 	brcmf: wifi@1 {
 		compatible = "brcm,bcm43752-fmac";
 		reg = <1>;
@@ -962,6 +944,7 @@
 		pinctrl-0 = <&wifi_host_wake_irq>;
 		pinctrl-names = "default";
 	};
+*/
 };
 
 &sdmmc {
@@ -1674,9 +1657,9 @@
 		compatible = "brcm,bcm4362a2-bt", "brcm,bcm43430a1-bt";
 		clocks = <&hym8563>;
 		clock-names = "lpo";
-		device-wakeup-gpios = <&gpio4 RK_PC4 GPIO_ACTIVE_HIGH>;	/* BT_WAKE */
-		host-wakeup-gpios = <&gpio3 RK_PA6 GPIO_ACTIVE_HIGH>; 	/* BT_HOST_WAKE */
-		shutdown-gpios = <&gpio3 RK_PB1 GPIO_ACTIVE_HIGH>;	/* BT_REG_ON */
+		device-wakeup-gpios = <&gpio4 RK_PC4 GPIO_ACTIVE_HIGH>;
+		host-wakeup-gpios = <&gpio3 RK_PA6 GPIO_ACTIVE_HIGH>;
+		shutdown-gpios = <&gpio3 RK_PB1 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&bt_reset_gpio>, <&bt_wake_gpio>, <&bt_irq_gpio>;
 		vbat-supply = <&vcc_3v3_s3>;
@@ -1715,36 +1698,18 @@
 	sbu2-dc-gpios = <&gpio4 RK_PA7 GPIO_ACTIVE_HIGH>;
 	status = "okay";
 
-	ports {
+	port {
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		port@0 {
+		usbdp_phy0_ss: endpoint@0 {
 			reg = <0>;
-			usbdp_phy0_ss_out: endpoint {
-				remote-endpoint = <&usbc0_ss>;
-			};
+			remote-endpoint = <&usbc0_ss>;
 		};
 
-		port@1 {
+		usbdp_phy0_sbu: endpoint@1 {
 			reg = <1>;
-			usbdp_phy0_ss_in: endpoint {
-				remote-endpoint = <&usb_host0_xhci_ss>;
-			};
-		};
-
-		port@2 {
-			reg = <2>;
-			usbdp_phy0_dp_in: endpoint {
-				remote-endpoint = <&dp0_out_con>;
-			};
-		};
-
-		port@3 {
-			reg = <3>;
-			usbdp_phy0_dp_out: endpoint {
-				remote-endpoint = <&usbc0_sbu>;
-			};
+			remote-endpoint = <&usbc0_sbu>;
 		};
 	};
 };
@@ -1754,26 +1719,12 @@
 };
 
 &usb_host0_xhci {	// fc000000, PHYs: <&u2phy0_otg>, <&usbdp_phy0 PHY_TYPE_USB3>
-	dr_mode = "otg";
 	usb-role-switch;
 	status = "okay";
 
-	ports {
-		#address-cells = <1>;
-		#size-cells = <0>;
-
-		port@0 {
-			reg = <0>;
-			usb_host0_xhci_hs: endpoint {
-				remote-endpoint = <&usbc0_hs>;
-			};
-		};
-
-		port@1 {
-			reg = <1>;
-			usb_host0_xhci_ss: endpoint {
-				remote-endpoint = <&usbdp_phy0_ss_in>;
-			};
+	port {
+		usb_host0_xhci_to_usbc0: endpoint {
+			remote-endpoint = <&usbc0_hs>;
 		};
 	};
 };
@@ -1804,13 +1755,6 @@
 
 &vop_mmu {
 	status = "okay";
-};
-
-&vp0 {
-	vp0_out_dp0: endpoint@a {
-		reg = <ROCKCHIP_VOP2_EP_DP0>;
-		remote-endpoint = <&dp0_in_vp0>;
-	};
 };
 
 &vp1 {
