@@ -1,0 +1,12 @@
+[Unit]
+Description=Skysi X5: activate Speaker/Headphone as default output
+After=pipewire.service wireplumber.service
+Requires=pipewire.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/skysi-audio-default.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=default.target

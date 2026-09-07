@@ -7,7 +7,11 @@ RK3588笔记本电脑，来自ODM厂商深圳**天思智慧Skysi**，型号**X5*
 - [Lenovo RK3588 Laptop](https://github.com/bingo1991/RK3588_Lenovo_Laptop)，基于Slim7模具(小新Pro14、Yoga14S)打造的工程样机，只能淘于二手市场
 - Skysi X5，完成度最高
 
-人工手动逆向还原设备树源码，mainline Linux 7.0 内核正常启动使用。
+人工手动逆向还原设备树源码，mainline Linux 7.0 内核基本可以正常启动使用。
+暂时存在如下的问题：
+- USB Type-C口的OTG和DP显示输出功能不可用，PD充电正常
+- HDMI开机后热插入黑屏，插着开机则没有问题
+- es7243e功能暂未验证
 
 ## Skysi X5 可公开购买的两个定制版本，固件**bascially**通刷
 - 格蠹(Gedu)的幽兰代码本(Yourland)
@@ -23,12 +27,28 @@ RK3588笔记本电脑，来自ODM厂商深圳**天思智慧Skysi**，型号**X5*
 - Type-C Solution: fusb302
 - Charger: SouthChip SC8886 (Same with Lenovo RK3588, compatible with TI bq25703a)
 - Battery: CW2017
-- WiFi/BT：AP6275S
-  - WiFi(SDIO): bcm43752a
-  - BT(UART1): bcm4362a2
+- WiFi/BT：AP6275S or Fn-Link6252
+  - WiFi(SDIO): bcm43752a or rtl8852bs
+  - BT(UART1): bcm4362a2 or rtl8852bs-bt
 - Audio: Dual-Mic, Speaker and 3.5mm Headphone
-  - es8326
-  - es7243e
+  - es8326, codec
+  - es7243e, dual mic array ？
+
+
+GPIO LED灯定制：
+查询支持的trigger(cat /sys/devices/platform/gpio-leds/leds/battery_charging/trigger)：
+- dc-charger-online
+- bq257xx-charger-online
+- cw2017-battery-charging-or-full
+- cw2017-battery-charging
+- cw2017-battery-full
+- cw2017-battery-charging-blink-full-solid
+- cw2017-battery-charging-orange-full-green
+
+固化到armbian镜像，userpatches/overlay/etc/armbian-leds.conf
+
+
+
 
 ### [幽兰代码本](https://www.nanocode.cn/#/yl/bom)
 ![image](https://github.com/user-attachments/assets/ae0bafdd-0f2d-4e09-8dce-675be2b05f17)
